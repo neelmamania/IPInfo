@@ -1,0 +1,62 @@
+<setup>
+    
+    <block title="IPInfo API Configuration" endpoint="ip_info_setup/api_configuration" entity="api_configuration">
+        
+        <text>Proide the API subscription details for IP Info</text>
+        
+        <input field="api_url">
+            <label>API URL</label>
+            <type>text</type>
+        </input>
+		
+        <input field="token">
+            <label>Authorization Token</label>
+            <type>text</type>
+        </input>
+        
+        
+        <text>
+            <![CDATA[ <script type="text/javascript">
+                $(function() {
+                // OS select dropdown
+                var sub_type = $("#\\/ip_info_setup\\/api_configuration\\/api_configuration\\/subscription_id");
+                var current_sub = sub_type.val();
+                var sub = new Array(4);
+                sub[0] = "Basic";
+                sub[1] = "Standard";
+                sub[2] = "Pro";
+				        sub[3] = "Enterprise";
+                
+                var token_id = $("#\\/ip_info_setup\\/api_configuration\\/api_configuration\\/token_id");
+                token_id.parent().before('<p class="helpText">Don\'t have token? Get it from <a href="https://ipinfo.io/account/manage-subscriptions"><b><u>here.</u></b></a></p>');
+                
+                var index = sub.indexOf(current_sub);
+                if (index == -1) {
+                    current_sub = "Basic"
+                    index = 0
+                }
+                if (index > -1) {
+                    sub.splice(index, 1);
+                }
+
+                sub_type.parent().after('<br/><select id="sub_select_dropdown"><option selected="selected" value="' + current_sub + '">' + current_sub + '</option><option value="' + sub[0] + '">' + sub[0] + '</option><option value="' + sub[1] + '">' + sub[1] + '</option><option value="' + sub[2] + '">' + sub[2] + '</option></select>');
+
+                sub_type.parent().hide();
+				var url_val = $("#\\/ip_info_setup\\/api_configuration\\/api_configuration\\/api_url_id");
+				url_val.parent().after('<br/><input type="text" value="https://inpinfo.io/" disabled></input><br/>');
+				url_val.parent().hide();
+				url_val.val("https://ipinfo.io/");
+
+                $("#sub_select_dropdown").on("change", function() {
+                  var new_select = $("#sub_select_dropdown");
+                  var sub_type = $("#\\/ip_info_setup\\/api_configuration\\/api_configuration\\/subscription_id");
+                  sub_type.val(new_select.val());
+                });
+
+              });
+            </script> ]]>
+        </text>
+        
+    </block>
+    
+</setup>

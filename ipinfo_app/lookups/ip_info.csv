@@ -1,2 +1,1 @@
 time,ip,city,region,country,loc,hostname,postal,org,subscription,asn,"asn_asn","asn_name","asn_domain","asn_route","asn_type","company_name","company_domain","company_type","carrier_name","carrier_mcc","carrier_mnc"
-"1594655642.055705","166.7.139.156",Wallace,Idaho,US,"47.2714,-115.8660","z-166-7-139-156.ip.fs.fed.us",83802,,pro,AS4152,USDA,"usda.gov","166.6.0.0/15",isp,"US Forest Service","usda.gov",isp,,,,
