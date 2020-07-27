@@ -1,0 +1,122 @@
+/* Cell Coloring */
+/* Cell Highlighting */
+
+h2,h1,h3{
+text-align : center !important;
+font-weight: bold !important;
+}
+table{
+		border : 1px solid black !important;
+}
+#tabletitle1 .dashboard-panel{
+	
+	background : skyblue !important;
+	color: black !important;
+	text-align : center !important;
+	height : 50px !important;
+}
+#tabletitle2 .dashboard-panel{
+	
+	background : skyblue !important;
+	text-align : center !important;
+	color: black !important;
+	height : 50px !important;
+}
+#tabletitle3 .dashboard-panel{
+	
+	background : skyblue !important;
+	color: black !important;
+	text-align : center !important;
+	height : 50px !important;
+}
+#tabletitle4 .dashboard-panel{
+	
+	background : skyblue !important;
+	color: black !important;
+	text-align : center !important;
+	height : 50px !important;
+}
+#tabletitle5 .dashboard-panel{
+	
+	background : skyblue !important;
+	color: black !important;
+	text-align : center !important;
+	height : 50px !important;
+}
+#tabletitle6 .dashboard-panel{
+	
+	background : skyblue !important;
+	color: black !important;
+	text-align : center !important;
+	height : 50px !important;
+}
+
+.dashboard:nth-child(1){
+	background-color : lightgrey !important;
+	color: black !important;
+}
+
+.dashboard-row:nth-child(1){
+	
+	color: black !important;	
+}
+.dashboard-panel{
+	background-color : #EEEEEE !important;
+	color: black !important;
+	
+}
+
+
+
+
+
+
+
+.SimpleResultsTable tr th:nth-of-type(1),td:nth-of-type(1){
+	 display:none !important;
+	 }
+	 
+.SimpleResultsTable th:nth-of-type(1){
+	 display:none !important;
+	 }	 
+	 
+	 th{
+	 display:none !important;
+	 }	 
+ /*
+ #highlight th.hideth{
+display: none;
+}
+*/
+table:nth-child(2){
+background-color:cyan !important;
+}
+table td{
+	color:black !important;
+}
+
+table td.range-none {
+    background-color: palegreen !important;
+}
+
+
+table td.range-low {
+    background-color: yellow !important;
+}
+
+
+table td.range-elevated {
+    background-color: orange !important;
+    font-weight: bold;
+}
+table td.range-severe {
+    background-color: red !important;
+    font-weight: bold;
+}
+
+
+
+
+
+
+

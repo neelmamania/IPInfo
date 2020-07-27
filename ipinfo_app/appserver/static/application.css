@@ -1,0 +1,68 @@
+
+
+/* Header Coloring */
+
+ .splunk-header.splunk-view.splunk-header.splunk-view > div[data-view="views/shared/appbar/Master"] {
+     background-color: #98AFC7;
+ }
+ 
+
+#tabletitle1 .dashboard-panel{
+	
+	background : #0072CB !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+#tabletitle2 .dashboard-panel{
+	
+	background : #0072CB !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+#tabletitle3 .dashboard-panel{
+	
+	background : #EDF1F4 !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+#tabletitle4 .dashboard-panel{
+	
+	background : #EDF1F4 !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+#tabletitle5 .dashboard-panel{
+	
+	background : #EDF1F4 !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+#tabletitle6 .dashboard-panel{
+	
+	background : #EDF1F4 !important;
+	color: black !important;
+	text-align : Left !important;
+	
+}
+
+svg > g.single-value-under-label > g.single-value-label > g.under-label-group > g.svg-label > text.under-label{
+     font-size: 150% !important;
+     fill: black !important;
+     font-weight: bold !important;
+ }
+
+ .splButton-primary,
+ input.searchButton {
+     background : #EDF1F4 !important;
+	 color: #EDF1F4 !important;
+ }
+ .splButton-primary:hover,
+ input.searchButton:hover {
+     background : #EDF1F4 !important;
+	 color: #EDF1F4 !important;
+ }

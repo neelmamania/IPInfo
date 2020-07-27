@@ -1,0 +1,199 @@
+<form stylesheet="application.css">
+  <label>IPInfo</label>
+  <search id="initsearch">
+    <query>| makeresults 1 | eval IP="$IP$"  | ipinfo IP | table  ip, city, region, country, loc,postal, hostname, asn_asn, asn_name, asn_domain, asn_route, asn_type, company_name, company_domain, company_type, carrier_name, carrier_mcc, carrier_mnc, subscription | fillnull value=N/A  ip, city, region, country, loc,postal, hostname, asn_asn, asn_name, asn_domain, asn_route, asn_type, company_name, company_domain, company_type, carrier_name, carrier_mcc, carrier_mnc </query>
+    <done>
+      <set token="token_subs">$result.subscription$</set>
+    </done>
+  </search>
+  <fieldset autoRun="true" submitButton="false">
+    <input type="text" token="IP">
+      <label></label>
+    </input>
+    <input type="text" token="Subscription" depends="$hidden$">
+      <label>Subscription</label>
+      <default>$token_subs$</default>
+      <initialValue>$token_subs$</initialValue>
+      <change>
+        <condition value="basic">
+          <unset token="PRO"></unset>
+          <unset token="STD"></unset>
+          <unset token="NOTBSC"></unset>
+          <set token="BSC"></set>
+          <set token="NOTPRO"></set>
+          <set token="NOTSTD"></set>
+        </condition>
+        <condition value="standard">
+          <unset token="PRO"></unset>
+          <unset token="BSC"></unset>
+          <unset token="NOTSTD"></unset>
+          <set token="STD"></set>
+          <set token="NOTPRO"></set>
+          <set token="NOTBSC"></set>
+        </condition>
+        <condition value="pro">
+          <unset token="BSC"></unset>
+          <unset token="STD"></unset>
+          <unset token="NOTPRO"></unset>
+          <set token="PRO"></set>
+          <set token="NOTBSC"></set>
+          <set token="NOTSTD"></set>
+        </condition>
+      </change>
+    </input>
+  </fieldset>
+  <row>
+    <panel id="tabletitle1">
+      <single>
+        <search>
+          <query>| makeresults 1 | eval ip="$IP$" | rex field=ip "(?&lt;IP&gt;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})" | fillnull value="Invalid IP" IP  | table IP</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x555","0xd93f3c"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">IP Address</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel id="tabletitle2">
+      <single>
+        <search base="initsearch">
+          <query>fields hostname </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">Hostname</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel id="tabletitle3">
+      <single>
+        <search base="initsearch">
+          <query>fields city </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x65a637","0xd93f3c"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">City</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel id="tabletitle4">
+      <single>
+        <search base="initsearch">
+          <query>fields region</query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">Region</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel id="tabletitle5">
+      <single>
+        <search base="initsearch">
+          <query>fields country</query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">Country</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel id="tabletitle6">
+      <single>
+        <search base="initsearch">
+          <query>fields postal</query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="underLabel">Postal</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <search>
+          <query>| makeresults 1 | eval ip_add="$IP$" | iplocation ip_add  |   geostats count by ip_add globallimit=0 |  eval blueCount = if(TOTAL &gt;= 1,TOTAL,0)</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.showTiles">1</option>
+        <option name="mapping.type">marker</option>
+        <option name="refresh.display">progressbar</option>
+      </map>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$NOTBSC$">
+      <title>ASN</title>
+      <table>
+        <search base="initsearch">
+          <query>fields asn_asn, asn_name, asn_domain, asn_route, asn_type | rename asn_asn as ASN, asn_name as NAME, asn_domain as DOMAIN, asn_route as ROUTE, asn_type as TYPE
+|  transpose | rename column as Key, "row 1" as Value</query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$BSC$">
+      <html>
+        <a href="https://ipinfo.io/account/manage-subscriptions" target="_blank"> <img src="/static/app/ipinfo_app/images/asn2x.png" />
+        </a>
+     </html>
+    </panel>
+    <panel depends="$PRO$">
+      <title>COMPANY</title>
+      <table>
+        <search base="initsearch">
+          <query>fields company_name, company_domain, company_type | rename company_name as NAME, company_domain as DOMAIN, company_type as TYPE
+|  transpose | rename column as Key, "row 1" as Value</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$NOTPRO$">
+      <html>
+        <a href="https://ipinfo.io/account/manage-subscriptions" target="_blank"> <img src="/static/app/ipinfo_app/images/company2x.png" />
+        </a>
+     </html>
+    </panel>
+    <panel depends="$PRO$">
+      <title>CARRIER</title>
+      <table>
+        <search base="initsearch">
+          <query>fields carrier_name, carrier_mcc, carrier_mnc | rename  carrier_name as NAME, carrier_mcc as MCC, carrier_mnc as MNC
+|  transpose | rename column as Key, "row 1" as Value</query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel depends="$NOTPRO$">
+      <html>
+        <a href="https://ipinfo.io/account/manage-subscriptions" target="_blank"> <img src="/static/app/ipinfo_app/images/carrier2x.png" />
+        </a>
+     </html>
+    </panel>
+  </row>
+</form>

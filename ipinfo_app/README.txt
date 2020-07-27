@@ -1,0 +1,1 @@
+https://github.com/ipinfo/splunk/blob/master/Installation%20and%20Configuration.pdf
