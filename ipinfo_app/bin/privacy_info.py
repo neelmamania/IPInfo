@@ -21,6 +21,12 @@ version = float(re.search("(\d+.\d+)", ver.__version__).group(1))
 
 import splunk.appserver.mrsparkle.lib.util as splunk_lib_util
 
+try:
+	from configparser import ConfigParser
+except ImportError:
+	from ConfigParser import ConfigParser
+
+	
 
 def get_logger(logger_id):
 	log_path = splunk_lib_util.make_splunkhome_path(["var", "log", "splunk","TA-wifi1"])
@@ -45,7 +51,7 @@ sub = ""
 
 def ipinfo(ip_add):
 	local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
-	f_read = open(local_conf, "r")
+	"""f_read = open(local_conf, "r")
 	for line in f_read:
 		if "token" in line:
 			token = line.split("=")[1].strip()
@@ -60,7 +66,30 @@ def ipinfo(ip_add):
 	        response = requests.request("GET", url, headers="", params=param)
         	response_result = json.loads(response.text)
         except Exception as e:
-                logger.info(e)
+                logger.info(e)"""
+
+
+	config = ConfigParser()
+	config.read(local_conf)
+	url = config.get("ip_info_configuration","api_url")
+	token = config.get("ip_info_configuration","api_token")
+	enable = config.get("ip_info_configuration","proxy_enable")
+	proxy_url = config.get("ip_info_configuration","proxy_url")
+	response = ""
+	url = "https://ipinfo.io/"+ip_add+"/privacy"
+	param = {"token" : token}
+	try:
+		if enable == "No":
+			response = requests.request("GET", url, headers="", params=param)
+			response_result = json.loads(response.text)
+		else:
+            proxies = { 'https' : proxy_url}
+			response = requests.request("GET", url, headers="", params=param, proxies=proxies)
+			response_result = json.loads(response.text)
+	except Exception as e:
+		logger.info(e)
+
+
 	result={}
 	
 	result["ip"] = ip_add

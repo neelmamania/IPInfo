@@ -3,10 +3,17 @@ import requests
 import json
 import sys
 import splunk.appserver.mrsparkle.lib.util as splunk_lib_util
+import re
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
+
+
 
 def ipinfo(ip_add):
     local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
-    
+    """    
     f_read = open(local_conf, "r")
     
     for line in f_read:
@@ -15,14 +22,26 @@ def ipinfo(ip_add):
         elif "sub" in line:
             global sub
             sub = line.split("=")[1].strip()
-    f_read.close()
-    
+    f_read.close()"""
+    config = ConfigParser()
+    config.read(local_conf)
+    url = config.get("ip_info_configuration","api_url")
+    token = config.get("ip_info_configuration","api_token")
+    enable = config.get("ip_info_configuration","proxy_enable")
+    proxy_url = config.get("ip_info_configuration","proxy_url")
+    response = ""
     url = "https://ipinfo.io/"+ip_add
-    param = {"token" : token}
-    
-    response = requests.request("GET", url, headers="", params=param)
-    
-    return response.text
+    param = {"token" : token}    
+    try:
+        if enable == "No":
+            response = requests.request("GET", url, headers="", params=param)
+            return response.text
+        else:
+            proxies = { 'https' : proxy_url}
+            response = requests.request("GET", url, headers="", params=param, proxies=proxies)
+            return response.text
+    except Exception as e:
+        print(e)
 
 results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults()
 

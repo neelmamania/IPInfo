@@ -21,6 +21,10 @@ version = float(re.search("(\d+.\d+)", ver.__version__).group(1))
 
 import splunk.appserver.mrsparkle.lib.util as splunk_lib_util
 
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 
 def get_logger(logger_id):
 	log_path = splunk_lib_util.make_splunkhome_path(["var", "log", "splunk","TA-wifi1"])
@@ -44,7 +48,7 @@ sub = ""
 
 
 def ipinfo(ip_add):
-	local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
+	"""local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
 	f_read = open(local_conf, "r")
 	for line in f_read:
 		if "token" in line:
@@ -61,13 +65,38 @@ def ipinfo(ip_add):
                 logger.info(response.text)
         	response_result = json.loads(response.text)
         except Exception as e:
-                logger.info(e)
+                logger.info(e)"""
+
+    local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
+    config = ConfigParser()
+    config.read(local_conf)
+    url = config.get("ip_info_configuration","api_url")
+    token = config.get("ip_info_configuration","api_token")
+    enable = config.get("ip_info_configuration","proxy_enable")
+    proxy_url = config.get("ip_info_configuration","proxy_url")
+    response = ""
+    url = "https://ipinfo.io/domains/"+ip_add
+    param = {"token" : token}
+    try:
+        if enable == "No":
+            response = requests.request("GET", url, headers="", params=param)
+            response_result = json.loads(response.text)
+        else:
+            proxies = { 'https' : proxy_url}
+            response = requests.request("GET", url, headers="", params=param, proxies=proxies)
+            response_result = json.loads(response.text)
+        if response.status_code!=200:
+            logger.error(response_result)
+            sys.exit()
+    except Exception as e:
+        logger.info(e)
+
 	result={}
-        s=","	
+    s=","
 	result["ip"] = response_result["ip"]
 	result["total"] = response_result["total"] if 'total' in response_result else ""
 	result["domains"] = unicode(s.join(response_result["domains"])).encode('ascii') if 'domains' in response_result else ""
-        return result
+    return result
 
 def append_dict_as_row(file_name, dict_of_elem):
 	# Open file in append mode
@@ -88,12 +117,23 @@ def main():
 
 	domain_info_csv = {}
 	lookup_csv = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","lookups", "domain_info.csv"])
-    
+        field_names = ['time','ip','total','domains'] 
+        if(os.path.isfile(lookup_csv)):
+                logger.debug("file exists")
+        else:
+                try:
+                        with open(lookup_csv, 'w') as file:
+                                writer = csv.DictWriter(file, fieldnames=field_names)
+                                writer.writeheader()
+                except Exception as e:
+                        logger.error(e)
+
 	with open(lookup_csv, 'r') as file:
 		csv_file = csv.DictReader(file,delimiter=',')
 		for row in csv_file:
 			domain_info_csv[row["ip"]]=row
-			
+
+	logger.info("here")			
 	ipfield = sys.argv[1]
 	infile = sys.stdin
 	outfile = sys.stdout

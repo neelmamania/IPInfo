@@ -1,49 +1,31 @@
-[views/basic]
-access = read : [*], write : [admin]
-export = none
-owner = nobody
-version = 1.0
-
-[views/standard]
-access = read : [*], write : [admin]
-export = none
-owner = nobody
-version = 1.0
-
-[views/pro]
-access = read : [*], write : [admin]
-export = none
-owner = nobody
-version = 1.0
-
-[views/enterprise]
-access = read : [*], write : [admin]
-export = none
-owner = nobody
-version = 1.0
-
-[commands]
-access = read : [ * ], write : [ admin ]
-export = system
-
-[commands/input]
-access = read : [ admin ], write : [ admin ]
-
-[ip_info_setup/api_configuration]
-version = 8.0.4.1
-modtime = 1593597139.786067000
-
-[app/install/is_configured]
-version = 8.0.4.1
-modtime = 1593597145.845419000
-
 [app/install/install_source_checksum]
-version = 8.0.5
-modtime = 1595600356.470606000
+version = 8.0.4
+modtime = 1601926075.223713000
 
-[savedsearches/Remove%20IP%20Record%20older%20than%2030%20Days]
-access = read : [ * ], write : [ admin ]
-export = none
+[views/configuration]
 owner = admin
 version = 8.0.4
-modtime = 1594657621.777826000
+modtime = 1601927977.063013000
+
+[views/setup_page_dashboard]
+version = 8.0.4
+modtime = 1601948608.413206000
+
+[ipinfo/default]
+owner = admin
+version = 8.0.4
+modtime = 1601949549.307031000
+
+[ipinfo/ip_info_configuration]
+owner = admin
+version = 8.0.4
+modtime = 1601949551.506089000
+
+[app/install]
+version = 8.0.4
+modtime = 1601950638.497426000
+
+[ip_info_setup/ip_info_configuration]
+owner = admin
+version = 8.0.4
+modtime = 1601950636.636959000

@@ -1,0 +1,102 @@
+<!-- 
+Both of the <dashboard> element's `styles` and `script` attribute search for
+files in `$SPLUNK_HOME/etc/<SPLUNK_APP_NAME>/appserver/static/*`
+
+Documentation link:
+http://docs.splunk.com/Documentation/Splunk/latest/Viz/PanelreferenceforSimplifiedXML#dashboard_or_form
+--><dashboard isDashboard="false" script="javascript/setup_page.js" stylesheet="styles/setup_page.css" hideEdit="true">
+  <label>IP Info Setup Page</label>
+  <row>
+    <panel>
+      <html>
+        <div id="main_container"/>
+      </html>
+      <html><head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+		    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script></head>
+		    		<style>
+		    		  input[type=radio] {
+    margin: 4px 0 5px;}
+			* {
+				box-sizing: border-box;
+			}
+			/*the container must be positioned relative:*/
+			.autocomplete {
+				position: relative;
+				display: block;
+			}
+
+			.datepicker {
+				margin-top: 15px;
+			}
+
+			.autocomplete-items div {
+				padding: 5px;
+				cursor: pointer;
+				background-color: #fff;
+				border: 1px solid #d4d4d4;
+			}
+
+			input[type="submit"] {
+				/* background-color: DodgerBlue; */
+				color: #000;
+				cursor: pointer;
+			}
+
+			.form-group {
+				margin-bottom: 15px;
+				margin-top: 15px;
+			}
+
+			.autocomplete-items {
+				margin-left: 15px;
+				margin-right: 15px;
+				position: absolute;
+				<!-- border: 1px solid #d4d4d4; -->
+				border-top: none;
+				z-index: 99;
+				/*position the autocomplete items to be the same width as the container:*/
+				top: 100%;
+				left: 0;
+				height: 214px;
+				overflow-y: auto;
+				right: 0;
+			}
+
+			.autocomplete-items div:hover {
+				background-color: #e9e9e9;
+			}
+
+			.autocomplete-active {
+				color: #ffffff;
+			}
+
+			.link {
+				color: black;
+				text-decoration: none;
+			}
+
+			.titleCare {
+				text-align: center;
+				font-size: 55px;
+			}
+
+			body {
+				background-color: #F8F8F8;
+			}
+
+			.row {
+				background-color: white;
+				padding: 15px;
+				margin: 15px;
+			}
+
+		</style>
+      </html>
+
+    </panel>
+  </row>
+</dashboard>
