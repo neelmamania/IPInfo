@@ -1,31 +1,8 @@
-[app/install/install_source_checksum]
-version = 8.0.4
-modtime = 1601926075.223713000
-
-[views/configuration]
-owner = admin
-version = 8.0.4
-modtime = 1601927977.063013000
-
-[views/setup_page_dashboard]
-version = 8.0.4
-modtime = 1601948608.413206000
-
-[ipinfo/default]
-owner = admin
-version = 8.0.4
-modtime = 1601949549.307031000
-
-[ipinfo/ip_info_configuration]
-owner = admin
-version = 8.0.4
-modtime = 1601949551.506089000
-
-[app/install]
-version = 8.0.4
-modtime = 1601950638.497426000
-
 [ip_info_setup/ip_info_configuration]
 owner = admin
-version = 8.0.4
-modtime = 1601950636.636959000
+version = 8.0.6
+modtime = 1602622015.341578000
+
+[app/install]
+version = 8.0.6
+modtime = 1602622015.381210000
