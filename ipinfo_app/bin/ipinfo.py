@@ -23,8 +23,10 @@ def ipinfo(ip_add):
             global sub
             sub = line.split("=")[1].strip()
     f_read.close()"""
+    local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
+    default_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","default", "ip_info_setup.conf"])
     config = ConfigParser()
-    config.read(local_conf)
+    config.read([default_conf,local_conf])
     url = config.get("ip_info_configuration","api_url")
     token = config.get("ip_info_configuration","api_token")
     enable = config.get("ip_info_configuration","proxy_enable")
