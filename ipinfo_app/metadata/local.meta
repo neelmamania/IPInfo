@@ -1,8 +1,0 @@
-[ip_info_setup/ip_info_configuration]
-owner = admin
-version = 8.0.6
-modtime = 1602622015.341578000
-
-[app/install]
-version = 8.0.6
-modtime = 1602622015.381210000
