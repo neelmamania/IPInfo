@@ -4,7 +4,7 @@ import requests
 import json
 import sys
 import splunk.appserver.mrsparkle.lib.util as splunk_lib_util
-
+import os
 
 def ipinfo():
     local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])

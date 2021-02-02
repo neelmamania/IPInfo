@@ -86,15 +86,32 @@ def getipinfo(list_of_ips):
     token = config.get("ip_info_configuration","api_token")
     enable = config.get("ip_info_configuration","proxy_enable")
     proxy_url = config.get("ip_info_configuration","proxy_url")
+
+    disable_ssl = config.get("ip_info_configuration","disable_ssl")
+    cert_path=splunk_lib_util.make_splunkhome_path(["etc", "apps", "ipinfo_app","appserver","static","ipinfo.cert"])
+    if (os.path.exists(cert_path)):
+        cert_exists = True
+    else:
+        cert_exists = False
+
+    if(disable_ssl != ""):
+        disable_ssl_request=False
+    else:
+        disable_ssl_request=True
+
+    if(disable_ssl_request==True and cert_exists==True):
+        disable_ssl_request = cert_path
+
+
     response = ""
     url = "https://ipinfo.io/batch?token="+token
     headers = {'Content-type': 'application/json'}
     try:
         if enable == "No":
-            response = requests.request("POST", url, headers=headers, data=list_of_ips)
+            response = requests.request("POST", url, headers=headers, verify= disable_ssl_request,data=list_of_ips)
         else:
             proxies = { 'https' : proxy_url}
-            response = requests.request("POST", url, headers=headers, data=list_of_ips, proxies=proxies)
+            response = requests.request("POST", url, headers=headers, verify= disable_ssl_request, data=list_of_ips, proxies=proxies)
     except Exception as e:
         print(e)
 

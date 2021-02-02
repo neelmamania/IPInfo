@@ -61,16 +61,33 @@ def ipinfo(ip_add):
 	token = config.get("ip_info_configuration","api_token")
 	enable = config.get("ip_info_configuration","proxy_enable")
 	proxy_url = config.get("ip_info_configuration","proxy_url")
+
+	disable_ssl = config.get("ip_info_configuration","disable_ssl")
+	cert_path=splunk_lib_util.make_splunkhome_path(["etc", "apps", "ipinfo_app","appserver","static","ipinfo.cert"])
+	if (os.path.exists(cert_path)):
+		cert_exists = True
+	else:
+		cert_exists = False
+
+	if(disable_ssl != ""):
+		disable_ssl_request=False
+	else:
+		disable_ssl_request=True
+
+	if(disable_ssl_request==True and cert_exists==True):
+		disable_ssl_request = cert_path
+
+
 	response = ""
 	url = "https://ipinfo.io/"+ip_add+"/privacy"
 	param = {"token" : token}
 	try:
 		if enable == "No":
-			response = requests.request("GET", url, headers="", params=param)
+			response = requests.request("GET", url, headers="", verify= disable_ssl_request, params=param)
 			response_result = json.loads(response.text)
 		else:
 			proxies = { 'https' : proxy_url}
-			response = requests.request("GET", url, headers="", params=param, proxies=proxies)
+			response = requests.request("GET", url, headers="", verify= disable_ssl_request, params=param, proxies=proxies)
 			response_result = json.loads(response.text)
 	except Exception as e:
 		logger.info(e)

@@ -79,15 +79,32 @@ def rangeinfo(range_value):
     token = config.get("ip_info_configuration","api_token")
     enable = config.get("ip_info_configuration","proxy_enable")
     proxy_url = config.get("ip_info_configuration","proxy_url")
+
+    disable_ssl = config.get("ip_info_configuration","disable_ssl")
+    cert_path=splunk_lib_util.make_splunkhome_path(["etc", "apps", "ipinfo_app","appserver","static","ipinfo.cert"])
+    if (os.path.exists(cert_path)):
+        cert_exists = True
+    else:
+        cert_exists = False
+
+    if(disable_ssl != ""):
+        disable_ssl_request=False
+    else:
+        disable_ssl_request=True
+
+    if(disable_ssl_request==True and cert_exists==True):
+        disable_ssl_request = cert_path
+
+
     response = ""
     url = "https://ipinfo.io/ranges/"+range_value
     param = {"token" : token}
     try:
         if enable == "No":
-            response = requests.request("GET", url, headers="", params=param)
+            response = requests.request("GET", url, headers="", verify= disable_ssl_request, params=param)
         else:
             proxies = { 'https' : proxy_url }
-            response=requests.request("GET", url, headers="", params=param, proxies=proxies)
+            response=requests.request("GET", url, headers="", verify= disable_ssl_request, params=param, proxies=proxies)
     except Exception as e:
         print(e)
 

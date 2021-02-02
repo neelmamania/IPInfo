@@ -17,12 +17,13 @@ define(["react", "splunkjs/splunk"], function(react, splunk_js_sdk){
       super(props);
 
       this.state = {
-	stanza: 'ip_info_configuration',
+      	stanza: 'ip_info_configuration',
         api_url: '',
         api_token: '',
         proxy_enable: '',
-	proxy_url:'',
-	proxy_port: ''
+	      proxy_url:'',
+        proxy_port: '',
+        disable_ssl: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -55,17 +56,21 @@ define(["react", "splunkjs/splunk"], function(react, splunk_js_sdk){
             e("label", null, [
               "Proxy Enable",
               e("input", { type: "radio", name: "proxy_enable", id:"yes", value: "yes", onChange: this.handleChange }),
-	      e("label", null , "Yes"),
-	      e("input", { type: "radio", name: "proxy_enable", id:"no", value: "no", onChange: this.handleChange }),
-	      e("label", null , "No")
+      	      e("label", null , "Yes"),
+	            e("input", { type: "radio", name: "proxy_enable", id:"no", value: "no", onChange: this.handleChange }),
+	            e("label", null , "No")
             ]),
             e("label", null, [
               "Proxy URL",
               e("input", { type: "text", name: "proxy_url",id:"proxy_url" ,value: this.state.proxy_url, onChange: this.handleChange })
             ]),
-	    e("label", null, [
+      	    e("label", null, [
               "Proxy Port",
               e("input", { type: "text", name: "proxy_port", id:"proxy_port", value: this.state.proxy_port, onChange: this.handleChange })
+            ]),
+            e("label", null, [
+              "Disable SSL",
+              e("input", { type: "checkbox", name: "disable_ssl", id:"disable_ssl", value: this.state.disable_ssl, onChange: this.handleChange })
             ]),
             e("input", { type: "submit", value: "Submit" })
           ])

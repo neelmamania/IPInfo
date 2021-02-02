@@ -17,12 +17,13 @@ define(["react", "splunkjs/splunk"], function(react, splunk_js_sdk){
       super(props);
 
       this.state = {
-	stanza: 'ip_info_configuration',
+		stanza: 'ip_info_configuration',
         api_url: '',
         api_token: '',
         proxy_enable: 'No',
-	proxy_url:'https://127.0.0.1',
-	proxy_port: ''
+		proxy_url:'https://127.0.0.1',
+		proxy_port: '',
+        disable_ssl: ''
       };
 
       this.handleChange = this.handleChange.bind(this);
@@ -82,7 +83,15 @@ define(["react", "splunkjs/splunk"], function(react, splunk_js_sdk){
 							e("input", { type: "text", name: "proxy_port", id:"proxy_port", value: this.state.proxy_port, onChange: this.handleChange,class:"form-control" })
 						])
 					]),
-*/					e("div",{class:"clearfix"}),
+*/					
+					e("div",{class:"clearfix"}),
+					e("div", {class:"form-group"}, [
+						e("label", {class:"col-md-2"}, "Disable SSL"),
+						e("div", {class:"col-md-4 autocomplete"},[
+							e("input", { style:{height:"13px"}, type: "checkbox", name: "disable_ssl", id:"disable_ssl", onChange: this.handleChange,class:"form-control" })
+						])
+					]),
+					e("div",{class:"clearfix"}),
 					e("div", {class:"form-group"}, [
 						e("div", {class:"col-md-offset-2 col-md-10"}, [
 							e("input", { type: "submit", value: "Submit" })
