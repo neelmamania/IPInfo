@@ -32,24 +32,15 @@ class ipinfo(GeneratingCommand):
 
         storage_passwords=self.service.storage_passwords
 
+
         local_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","local", "ip_info_setup.conf"])
-    
-        """f_read = open(local_conf, "r")
-
-        for line in f_read:
-            if "token" in line:
-                token = line.split("=")[1].strip()
-            elif "sub" in line:
-                global sub
-                sub = line.split("=")[1].strip()
-        f_read.close()"""
-
+        default_conf = splunk_lib_util.make_splunkhome_path(["etc","apps","ipinfo_app","default", "ip_info_setup.conf"])
         config = ConfigParser()
-        config.read(local_conf)
+        config.read([default_conf,local_conf])
+        url = config.get("ip_info_configuration","api_url")
         token = config.get("ip_info_configuration","api_token")
         enable = config.get("ip_info_configuration","proxy_enable")
         proxy_url = config.get("ip_info_configuration","proxy_url")
-
         disable_ssl = config.get("ip_info_configuration","disable_ssl")
         cert_path=splunk_lib_util.make_splunkhome_path(["etc", "apps", "ipinfo_app","appserver","static","ipinfo.cert"])
         if (os.path.exists(cert_path)):
@@ -70,10 +61,10 @@ class ipinfo(GeneratingCommand):
         param = {"token" : token}
         try:
             if enable == "No":
-                response = requests.request("post", url+token, headers=headers, verify= disable_ssl_request, data=data)
+                response = requests.request("post", url+"batch?token="+token, headers=headers, verify= disable_ssl_request, data=data)
             else:
                 proxies = { 'https' : proxy_url}
-                response = requests.request("post", url+token, headers=headers, verify= disable_ssl_request, data=data, proxies=proxies)
+                response = requests.request("post", url+"batch?token="+token, headers=headers, verify= disable_ssl_request, data=data, proxies=proxies)
         except Exception as e:
             logger.info(e)
 
